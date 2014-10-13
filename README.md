@@ -1,7 +1,7 @@
-# Laravel Simple Admin Table Listing
+laravel-tblist
 ==============
 
-Simple Laravel table listing.
+laravel simple admin table listing
 
 ----------
 ## Installation
