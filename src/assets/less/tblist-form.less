@@ -1,0 +1,122 @@
+.tblist-form {
+  .check-column {
+    padding:0px;
+    width:40px;
+
+    .checkbox {
+      margin: 0px;
+
+      & > label {
+        display: inherit;
+        padding: 10px;
+        width: 40px;
+      }
+    }
+  }
+
+  .tblist-form-toolbar {
+    margin-bottom: 20px;
+  }
+
+  thead,tfoot {
+    .check-column,.sorting {
+      padding:0px;
+      vertical-align: inherit;
+      a{
+        display: block;
+        line-height: 20px;
+        padding: 10px;
+      }
+    }
+
+    .sorting {
+      i.fa {
+        display: none;
+      }
+
+      &.sorting_desc {
+        i.fa {
+          &.fa-caret-down {
+            display:inline-block;
+          }
+          &.fa-caret-up {
+            display:none;
+          }
+        }
+
+        &:hover {
+          i.fa {
+            &.fa-caret-down {
+              display:none;
+            }
+            &.fa-caret-up {
+              display:inline-block;
+            }
+          }
+        }
+      }
+      &.sorting_asc {
+        i.fa {
+          &.fa-caret-down {
+            display:none;
+          }
+          &.fa-caret-up {
+            display:inline-block;
+          }
+        }
+
+        &:hover {
+          i.fa {
+            &.fa-caret-down {
+              display:inline-block;
+            }
+            &.fa-caret-up {
+              display:none;
+            }
+          }
+        }
+      }
+    }
+  }
+
+
+  .pagination {
+    margin:0px;
+    float: right;
+  }
+
+  .pagination-info {
+    display: inline-block;
+    padding-top: 6px;
+    margin-right: 20px;
+
+    + .form-group {
+      display: inline-block;
+
+      & .per-page.form-control{
+        width: 70px;
+        display: inline-block;
+      }
+    }
+  }
+
+
+  .row-actions{
+    margin-top: 5px;
+    visibility: hidden;
+    font-size:14px;
+  }
+
+  tr {
+    .column-action {
+      text-align: center;
+    }
+
+    &:hover {
+      .row-actions{
+
+        visibility:inherit;
+      }
+    }
+  }
+}

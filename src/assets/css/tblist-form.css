@@ -1,0 +1,93 @@
+.tblist-form .check-column {
+  padding: 0px;
+  width: 40px;
+}
+.tblist-form .check-column .checkbox {
+  margin: 0px;
+}
+.tblist-form .check-column .checkbox > label {
+  display: inherit;
+  padding: 10px;
+  width: 40px;
+}
+.tblist-form .tblist-form-toolbar {
+  margin-bottom: 20px;
+}
+.tblist-form thead .check-column,
+.tblist-form tfoot .check-column,
+.tblist-form thead .sorting,
+.tblist-form tfoot .sorting {
+  padding: 0px;
+  vertical-align: inherit;
+}
+.tblist-form thead .check-column a,
+.tblist-form tfoot .check-column a,
+.tblist-form thead .sorting a,
+.tblist-form tfoot .sorting a {
+  display: block;
+  line-height: 20px;
+  padding: 10px;
+}
+.tblist-form thead .sorting i.fa,
+.tblist-form tfoot .sorting i.fa {
+  display: none;
+}
+.tblist-form thead .sorting.sorting_desc i.fa.fa-caret-down,
+.tblist-form tfoot .sorting.sorting_desc i.fa.fa-caret-down {
+  display: inline-block;
+}
+.tblist-form thead .sorting.sorting_desc i.fa.fa-caret-up,
+.tblist-form tfoot .sorting.sorting_desc i.fa.fa-caret-up {
+  display: none;
+}
+.tblist-form thead .sorting.sorting_desc:hover i.fa.fa-caret-down,
+.tblist-form tfoot .sorting.sorting_desc:hover i.fa.fa-caret-down {
+  display: none;
+}
+.tblist-form thead .sorting.sorting_desc:hover i.fa.fa-caret-up,
+.tblist-form tfoot .sorting.sorting_desc:hover i.fa.fa-caret-up {
+  display: inline-block;
+}
+.tblist-form thead .sorting.sorting_asc i.fa.fa-caret-down,
+.tblist-form tfoot .sorting.sorting_asc i.fa.fa-caret-down {
+  display: none;
+}
+.tblist-form thead .sorting.sorting_asc i.fa.fa-caret-up,
+.tblist-form tfoot .sorting.sorting_asc i.fa.fa-caret-up {
+  display: inline-block;
+}
+.tblist-form thead .sorting.sorting_asc:hover i.fa.fa-caret-down,
+.tblist-form tfoot .sorting.sorting_asc:hover i.fa.fa-caret-down {
+  display: inline-block;
+}
+.tblist-form thead .sorting.sorting_asc:hover i.fa.fa-caret-up,
+.tblist-form tfoot .sorting.sorting_asc:hover i.fa.fa-caret-up {
+  display: none;
+}
+.tblist-form .pagination {
+  margin: 0px;
+  float: right;
+}
+.tblist-form .pagination-info {
+  display: inline-block;
+  padding-top: 6px;
+  margin-right: 20px;
+}
+.tblist-form .pagination-info + .form-group {
+  display: inline-block;
+}
+.tblist-form .pagination-info + .form-group .per-page.form-control {
+  width: 70px;
+  display: inline-block;
+}
+.tblist-form .row-actions {
+  margin-top: 5px;
+  visibility: hidden;
+  font-size: 14px;
+}
+.tblist-form tr .column-action {
+  text-align: center;
+}
+.tblist-form tr:hover .row-actions {
+  visibility: inherit;
+}

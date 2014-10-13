@@ -1,0 +1,31 @@
+{
+    "name": "nerweb/laravel-tblist",
+    "description": "laravel simple admin table listing",
+    "keywords": [
+        "laravel-tblist",
+        "table",
+        "listing",
+        "tblist",
+        "view",
+        "laravel"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Regner Atillo",
+            "email": "atilloregner@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.x|5.0.x"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.0.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nerweb\\Tblist\\": "src/"
+        }
+    }
+}
