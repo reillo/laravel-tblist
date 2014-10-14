@@ -817,7 +817,7 @@ abstract class Tblist {
      *
      * @return string
      */
-    protected function getBaseURL()
+    public function getBaseURL()
     {
         return ($this->baseURL) ? $this->baseURL : Request::url();
     }
