@@ -11,7 +11,7 @@ abstract class BaseTblist extends Tblist {
 
     function __construct($support = null)
     {
-        $this->perPageSelection    = 'all,1,5,10,50,100,200';
+        $this->perPageSelection    = '1,5,10,25,50,100,250';
         $this->perPage             = 25;
         $this->pageJump            = 10;
 

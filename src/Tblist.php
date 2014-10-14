@@ -590,7 +590,7 @@ abstract class Tblist {
                    value="" autocomplete="off">
             <span class="lbl"></span>
         </label>
-    <?php
+        <?php
     }
 
     protected function colSetHeaderAction()
