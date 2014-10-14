@@ -1,5 +1,5 @@
 .tblist-form {
-  .check-column {
+  .column-check {
     padding:0px;
     width:40px;
 
@@ -19,7 +19,7 @@
   }
 
   thead,tfoot {
-    .check-column,.sorting {
+    .column-check,.sorting {
       padding:0px;
       vertical-align: inherit;
       a{
@@ -107,7 +107,7 @@
     font-size:14px;
   }
 
-  tr {
+  tr, th {
     .column-action {
       text-align: center;
     }
@@ -119,4 +119,14 @@
       }
     }
   }
+}
+
+
+.bulk_actions {
+  margin-right: 20px;
+  display: inline-block;
+}
+.bul_actions:last-child {
+  margin-right: 0px;
+
 }

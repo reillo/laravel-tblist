@@ -1,11 +1,11 @@
-.tblist-form .check-column {
+.tblist-form .column-check {
   padding: 0px;
   width: 40px;
 }
-.tblist-form .check-column .checkbox {
+.tblist-form .column-check .checkbox {
   margin: 0px;
 }
-.tblist-form .check-column .checkbox > label {
+.tblist-form .column-check .checkbox > label {
   display: inherit;
   padding: 10px;
   width: 40px;
@@ -13,15 +13,15 @@
 .tblist-form .tblist-form-toolbar {
   margin-bottom: 20px;
 }
-.tblist-form thead .check-column,
-.tblist-form tfoot .check-column,
+.tblist-form thead .column-check,
+.tblist-form tfoot .column-check,
 .tblist-form thead .sorting,
 .tblist-form tfoot .sorting {
   padding: 0px;
   vertical-align: inherit;
 }
-.tblist-form thead .check-column a,
-.tblist-form tfoot .check-column a,
+.tblist-form thead .column-check a,
+.tblist-form tfoot .column-check a,
 .tblist-form thead .sorting a,
 .tblist-form tfoot .sorting a {
   display: block;
@@ -85,9 +85,18 @@
   visibility: hidden;
   font-size: 14px;
 }
-.tblist-form tr .column-action {
+.tblist-form tr .column-action,
+.tblist-form th .column-action {
   text-align: center;
 }
-.tblist-form tr:hover .row-actions {
+.tblist-form tr:hover .row-actions,
+.tblist-form th:hover .row-actions {
   visibility: inherit;
+}
+.bulk_actions {
+  margin-right: 20px;
+  display: inline-block;
+}
+.bul_actions:last-child {
+  margin-right: 0px;
 }

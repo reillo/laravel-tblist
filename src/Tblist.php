@@ -465,7 +465,7 @@ abstract class Tblist {
         ?>
         <tr>
             <?php if ($this->support['column_checkable']) : ?>
-                <th class="th-small check-column <?php echo $this->getColumnClasses("column_checkable"); ?>">
+                <th class="column-check <?php echo $this->getColumnClasses("column_checkable"); ?>">
                     <div>
                         <?php $this->colSetHeaderCheckable(); ?>
                     </div>
@@ -478,7 +478,7 @@ abstract class Tblist {
                 <?php $sortable_class = $this->getSortableClass($column_key, $column_data); ?>
 
                 <th data-column-name="<?php echo $column_key; ?>"
-                    class="header <?php echo $sortable_class; ?> <?php echo $this->getColumnClasses($column_key); ?>">
+                    class="<?php echo $sortable_class; ?> <?php echo $this->getColumnClasses($column_key); ?>">
                     <?php $this->getSortableLinkStart($column_key, $column_data); ?>
                     <?php
                     // get content or display from the child column
@@ -498,7 +498,7 @@ abstract class Tblist {
 
             <?php // Add action if the child is set to be having an action column ?>
             <?php if ($this->support['action']) : ?>
-                <th class="header <?php echo $this->getColumnClasses("action"); ?>">
+                <th class="column-action <?php echo $this->getColumnClasses("action"); ?>">
                     <?php $this->colSetHeaderAction(); ?>
                 </th>
             <?php endif; ?>
@@ -590,7 +590,7 @@ abstract class Tblist {
                    value="" autocomplete="off">
             <span class="lbl"></span>
         </label>
-        <?php
+    <?php
     }
 
     protected function colSetHeaderAction()
@@ -613,7 +613,7 @@ abstract class Tblist {
                 <tr class="" data-id="<?php echo $row->{$this->tableId}; ?>">
 
                     <?php if ($this->support['column_checkable']) : ?>
-                        <td class="check-column <?php echo $this->getColumnClasses("column_checkable"); ?>">
+                        <td class="column-check <?php echo $this->getColumnClasses("column_checkable"); ?>">
                             <?php $this->colSetCheckable($row); ?>
                         </td>
                     <?php endif; ?>
@@ -625,7 +625,7 @@ abstract class Tblist {
                     <?php endforeach; ?>
 
                     <?php if ($this->support['action']) : ?>
-                        <td class="<?php echo $this->getColumnClasses("action"); ?>">
+                        <td class="column-action <?php echo $this->getColumnClasses("action"); ?>">
                             <?php $this->colSetAction($row); ?>
                         </td>
                     <?php endif; ?>
@@ -678,7 +678,7 @@ abstract class Tblist {
                    id="checkbox-<?php echo $row_id; ?>" value="<?php echo $row_id; ?>" autocomplete="off">
             <span class="lbl"></span>
         </label>
-        <?php
+    <?php
     }
 
     protected function colSetAction($row) { return NULL; }
@@ -763,7 +763,7 @@ abstract class Tblist {
                 <?php echo $anchor_content ?>
             </a>
         </li>
-        <?php
+    <?php
     }
 
 
