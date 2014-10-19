@@ -15,11 +15,13 @@ Then, run `composer update nerweb/laravel-tblist` or `composer install` if you h
 
 ## Usage
 
+For the complete example, see src/example folder.
+
 I assume that you have already created a class for your intended model.
 First we need to create our own class and named it UserTblist.
 
 ```php
-class UserTblist extends \Nerweb\Tblist\BaseTblist {
+class UserTblist extends BaseTblist {
 
     // set no result message
     public $noResults = "No User found.";
@@ -32,27 +34,28 @@ class UserTblist extends \Nerweb\Tblist\BaseTblist {
 
     // set per page drop down selection (default '1,5,10,25,50,100,250')
     // accepts string separated by comma or an array of item
-    // you can insert all string to select all item.
-    // public $perPageSelection = '1,5,10,25,50,100,250';
+    // you can insert 'all' string without quotes to select all item.
+    // public $perPageSelection = 'all,1,5,10,25,50,100,250';
 
-    // if option column_checkable is set to true, then then checkbox
-    // it will generate will be use the value of this property as
-    // input name.
+    // if option column_checkable is set to true, then this will be
+    // use as the name of the checkbox input
     // Note! it will automatically be suffixed with open and close bracket
-    //       to specific multiple selection or array
+    //       as multiple checkbox selection
     // (default check_item)
     // public $cbName = "check_item";
 
     // if option advance_shortcut is set to true, then this property will
-    // be used. The pagination jump descripancy from current page.
+    // be used. The pagination will jump into from current page.
     // public $pageJump = 10;
 
     function __construct()
     {
-        // set the database main table name we want to display (i.e users, posts)
+        // set the database main table name we want to display without
+        // prefix (i.e users, posts)
         $this->table = 'users';
 
         // set the database main table id (i.e post_id, default is id).
+        // will be use to set the checkbox in each result rows.
         // $this->tableId = 'user_id';
 
         // override default support
@@ -69,7 +72,7 @@ class UserTblist extends \Nerweb\Tblist\BaseTblist {
             'advance_shortcut'  => false,
         ));
 
-        // we need to create a custom method setQuery,
+        // Build query
         $this->setQuery();
 
         // set table columns
@@ -86,9 +89,6 @@ class UserTblist extends \Nerweb\Tblist\BaseTblist {
     {
         // tblist use eloquent to process database query
 
-        // all users
-        // $this->query = new User();
-
         // Only active users
         $this->query = User::where('active',1);
 
@@ -102,9 +102,8 @@ class UserTblist extends \Nerweb\Tblist\BaseTblist {
         // Debug query
         // $this->query->toSql();
 
-        // If we want to order items by default to specific column and
-        // not being displayed in the header or does not exists in column properties
-        // then we use the default order method by laravel.
+        // If we want to order by default to specific column and
+        // then we need use the default order method
         // $this->query->orderBy('users.registration_date'([,'asc|desc']));
 
         // If we want to order items and show
@@ -112,22 +111,25 @@ class UserTblist extends \Nerweb\Tblist\BaseTblist {
         // then we need to assign an array to columnOrders
         $this->columnOrders = array(
             // ([table_without_prefix.])column_name => 'asc|desc'
-            'posts.post_title' => 'asc',
-            'posts.post_mime_type' => 'asc',
+            'users.username' => 'asc'
         );
 
-        // Sometimes we need to specifically select a column
-        // this property accepts array of columns. this is the same
-        // with the value passed to $user->select(array()).
+        // Sometimes we need to specifically select a column. this is
+        // the same with the array value passed to model select method.
         // (by default it uses array('*') to select all
         // $this->columnsToSelect = array('*');
 
     }
 
 
+    /**
+     * Set columns to display
+     *
+     * return void
+     */
     protected function setColumns()
     {
-        // the last but not the least, is to choose what columns should be displayed in the table.
+        // choose what columns should be displayed in the table.
         // For table display, we need to specify the column name for the result query.
         $this->columns = array(
             // '([table_without_prefix.])column_name' => array(
@@ -136,27 +138,28 @@ class UserTblist extends \Nerweb\Tblist\BaseTblist {
             //      'classes' => 'someclass someclass2' (string|optional)
             // ),
             'users.id'   => array(
-                'label'     => 'Title',
+                'label'     => 'ID',
                 'sortable'  => true
             ),
             'users.username'   => array(
-                'label'     => 'Description',
-                'sortable'  => false
+                'label'     => 'Username',
+                'sortable'  => true
             ),
             'users.email'   => array(
-                'label'     => 'Description',
-                'sortable'  => false
+                'label'     => 'Email',
+                'sortable'  => true
             ),
             'users.created_at'   => array(
-                'label'     => 'Description',
-                'sortable'  => false
+                'label'     => 'Created At',
+                'sortable'  => true
             ),
         );
     }
 }
 ```
 
-That's it for now. Let just see the result in action. Create a route and controller, inside the controller method and insert below.
+That's it for now. Let just see the result in action.
+Create a route and controller. inside the controller method, and insert below.
 
 ```php
 $list = new UserTblist();
@@ -165,69 +168,48 @@ if (Request::ajax())
 {
     return $list->toJson();
 }
-else
-{
-    echo Form:open(array('action'=>'#','method'=>'get','id'=>'user_tblist','class'=>'tblist'));
-    // some input fields for filter and hidden
-    echo $list->getTableData(),
-    echo $list->getPagination(),
-    echo $list->getPaginationInfo(),
-    echo Form::close();
 
-}
+echo Form:open(array(
+    'action'=>'#',
+    'method'=>'get',
+    'id'=>'user_tblist',
+    'class'=>'tblist-form'
+));
+
+// some input fields for filter and hidden
+echo $list->getTableData();
+echo $list->getPagination();
+echo $list->getPaginationInfo();
+
+echo Form::close();
 ```
 Also, load jQuery and laravel-tblist jQuery helper.
 ```html
 // Load jQuery
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 // to use ajax, load jquery-tblist js
-<script src="/assets/js/jquery-tblist.js"></script>
+<script src="/assets/js//tblist.jquery.js"></script>
 ```
 Initialize laravel-tblist
 ```js
 // Initialize tblist
-'use strict';
-$j = jQuery.noConflict();
-
-$j(function() {
-
+$(function() {
     // Global Options
-    var options = {
-        start:  function(parameter,$list) { alert('table list request started'); },
-        end:    function(parameter,$list) { alert('table list request ended'); },
-        onSelect:    function() { return false; },
+    $('.tblist-form').tblist({
+         start:  function(parameter,$list) {
+            // alert('table list request started');
+        },
+         end:    function(parameter,$list) {
+            // alert('table list request ended');
+        },
+         onSelect:    function() { return false; },
 
-        table:              ".table-list",
-        perPage:            ".per-page",
-        pagination:         ".pagination",
-        paginationInfo:     ".pagination-info",
-        ajaxSubmitEnabled:  true
-    };
-
-    $j('.tblist').tblist(options);
-
-    // listen to check and un check box.
-    // get currently all check table id
-    // Note! Assume that class .tblist has been initiated with tblist plugin.
-
-    // get all selected item from the current page.
-    $j('#user_tblist').tblist('count');
-
-    // Get all the checked item.
-    $j('#user_tblist').tblist('getCb');
-
-    //Programmatically select an item.
-    $j('#user_tblist').tblist('selectCb',[the_tableId]);
-
-    // Programmatically select all item.
-    $j('#user_tblist').tblist('selectAllCb');
-
-    // Programmatically remove an item.
-    $j('#user_tblist').tblist('removeCb',[the_tableId]);
-
-    // Programmatically Remove all item.
-    $j('#user_tblist').tblist('removeAllCb');
-
+         table:              ".table-list",
+         perPage:            ".per-page",
+         pagination:         ".pagination",
+         paginationInfo:     ".pagination-info",
+         ajaxSubmitEnabled:  true
+     });
 });
 ```
 
@@ -238,23 +220,14 @@ that accepts only 1 parameter, an object of result row.
 in your UserTblist, add this next to setQuery method
 
 ```php
-public function colSetUsername($row)
+protected function colSetId($row)
 {
-    // display default
-    // echo $row->username;
-
-    // custom display
-    // do what ever you want and echo the display
-
-    // Note! that it is important that you echo the display
-    // to capture with ob_start() and ob_get_clean();
-
-    echo "this username \"{$row->username}\" has an email of {$row->email}";
+    echo HTML::link(URL::to("/users/$row->id/view"), $row->id);
 }
 
-public function colSetCreatedAt($row)
+protected function colSetCreatedAt($row)
 {
-    echo date('d/m/Y',$row->created_at);
+    echo date('Y-m-d', strtotime($row->created_at));
 }
 ```
 
@@ -278,9 +251,9 @@ and Add the method below
 ```php
 public function colSetUserFullInfo($row)
 {
-    echo "firstname: {$row->firstname}";
+    echo "first_name: {$row->first_name}";
     echo '<br />';
-    echo "lastname: {$row->lastname}";
+    echo "last_name: {$row->last_name}";
     echo '<br />';
     echo "age: {$row->age}";
     echo '<br />';
@@ -297,7 +270,7 @@ that specifies the form, you can then use that to check which tblist
 it is intended to.
 
 #### Method 2:
-- set the url property by ```php $list->setBaseURL('url','optional_parameters') ```
+- set the url property by ```$list->setBaseURL('url','array_parameters')```
 - set the form action attribute to the url just being set.
 - create the url route and controller, initiate the child class (i.e UserTblist) and return the ajax data similar below.
 
@@ -307,6 +280,7 @@ if (Request::ajax())
     return $list->toJson();
 }
 ```
+
 
 ## License
 This project is open-sourced software licensed under the [MIT license][mit-url].
