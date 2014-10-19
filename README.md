@@ -21,7 +21,7 @@ I assume that you have already created a class for your intended model.
 First we need to create our own class and named it UserTblist.
 
 ```php
-class UserTblist extends BaseTblist {
+class UserTblist extends \Nerweb\Tblist\BaseTblist {
 
     // set no result message
     public $noResults = "No User found.";
