@@ -170,10 +170,9 @@ if (Request::ajax())
 }
 
 echo Form:open(array(
-    'action'=>'#',
-    'method'=>'get',
-    'id'=>'user_tblist',
-    'class'=>'tblist-form'
+    'method' =>'get',
+    'id' =>'user_tblist',
+    'class' =>'tblist-form'
 ));
 
 // some input fields for filter and hidden
