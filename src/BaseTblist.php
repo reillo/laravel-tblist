@@ -31,24 +31,20 @@ abstract class BaseTblist extends Tblist {
     protected function colSetHeaderCheckable()
     {
         ?>
-        <div class="checkbox">
-            <label>
-                <input autocomplete="off" type="checkbox" id="<?php echo $this->table; ?>-check-all" class="cb-select-all input-beauty" name="check" value="">
-                <span class="lbl"></span>
-            </label>
-        </div>
-    <?php
+        <label>
+            <input autocomplete="off" type="checkbox" id="<?php echo $this->table; ?>-check-all" class="cb-select-all input-beauty" name="check" value="">
+            <span class="lbl"></span>
+        </label>
+        <?php
     }
 
     protected function colSetCheckable($db_row) {
         $row_id = $db_row->{$this->tableId};
         ?>
-        <div class="checkbox">
-            <label>
-                <input  autocomplete="off" class="cb-select input-beauty cb-select-id-<?php echo $row_id; ?>" type="checkbox" name="<?php echo $this->cbName ?>" value="<?php echo $row_id; ?>">
-                <span class="lbl"></span>
-            </label>
-        </div>
+        <label>
+            <input  autocomplete="off" class="cb-select input-beauty cb-select-id-<?php echo $row_id; ?>" type="checkbox" name="<?php echo $this->cbName ?>" value="<?php echo $row_id; ?>">
+            <span class="lbl"></span>
+        </label>
     <?php
     }
 
