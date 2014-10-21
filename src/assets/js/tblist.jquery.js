@@ -1,23 +1,9 @@
-/* ========================================================================
-* Tblist: tblist.php v0.2.2-beta
-* http://github.com/nerweb93/laravel-tblist
-* ========================================================================
-* Copyright 2014 Ner Atillo
-*
-* This program is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 2 of the License, or
-* (at your option) any later version.
-*
-* This program is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-* You should have received a copy of the GNU General Public License
-* along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*
-* * ======================================================================== */
-
+/**
+ * Laravel Tblist
+ * http://github.com/nerweb93/laravel-tblist
+ *
+ * jQuery Helper
+ */
 jQuery(function ($) {
 
     // Helpers
@@ -79,20 +65,17 @@ jQuery(function ($) {
 
         this._getDataParam = function () {
             var _self = this,
-                strparam = '';
+                strParam = '';
 
             if (_self.isAjaxSubmitEnabled()) {
-                strparam = _self.$list.serialize();
+                strParam = _self.$list.serialize();
             }
 
             for (var i in _self.params) {
-                var paramkey = i,
-                    paramvalue = _self.params[i];
-
-                strparam += '&' + paramkey + '=' + encodeURIComponent(paramvalue);
+                strParam += '&' + i + '=' + encodeURIComponent(_self.params[i]);
             }
 
-            return strparam;
+            return strParam;
         };
 
 
@@ -135,8 +118,6 @@ jQuery(function ($) {
             var _self = this;
 
             _self.$list.on('change', 'input[type=checkbox].cb-select-all', function (e) {
-                var $allcb = _self.$list.find('input[type=checkbox].cb-select');
-
                 if ($(this).is(':checked')) {
                     _self.selectAllCb();
                 } else {

@@ -4,7 +4,7 @@ use \Illuminate\Support\Facades\Request;
 use \Illuminate\Support\Str;
 
 /**
- * Laravel Tblist v1.0.0
+ * Laravel Tblist
  * http://github.com/nerweb93/laravel-tblist
  *
  * Class Tblist
