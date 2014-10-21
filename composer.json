@@ -2,10 +2,10 @@
     "name": "nerweb/laravel-tblist",
     "description": "laravel simple admin table listing",
     "keywords": [
-        "laravel-tblist",
+        "admin",
         "table",
         "listing",
-        "tblist",
+        "eloquent",
         "view",
         "laravel"
     ],
