@@ -898,7 +898,7 @@ abstract class Tblist {
      */
     protected function extractAliases($string)
     {
-        if ( ! strpos($string,'.')) return array('', $string);
+        if (strpos($string,'.') === false) return array('', $string);
 
         $exploded_key = explode('.',$string);
         // [0] = table alias
