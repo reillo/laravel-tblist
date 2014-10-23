@@ -11,9 +11,27 @@ use URL;
  */
 abstract class BaseTblist extends Tblist {
 
-    public $perPageSelection    = 'all,1,5,10,25,50,100,250';
-    public $perPage             = 25;
-    public $pageJump            = 10;
+    /**
+     * Per page selection
+     *
+     * @var string $perPageSelection
+     */
+    public $perPageSelection = 'all,1,5,10,25,50,100,250';
+
+    /**
+     * The checkbox or row selection checkbox name
+     *
+     * @var string $cbName
+     */
+    public $cbName = "check_item";
+
+    /**
+     * New Instance
+     */
+    function __construct()
+    {
+        parent::__construct();
+    }
 
     // Set Columns for sortable and action
 
@@ -55,7 +73,7 @@ abstract class BaseTblist extends Tblist {
             <input autocomplete="off" type="checkbox" id="<?php echo $this->table; ?>-check-all" class="cb-select-all input-beauty" name="check" value="">
             <span class="lbl"></span>
         </label>
-    <?php
+        <?php
     }
 
     /**
@@ -82,7 +100,7 @@ abstract class BaseTblist extends Tblist {
 
             <span class="lbl"></span>
         </label>
-    <?php
+        <?php
     }
 
     protected function colSetAction($row)
@@ -112,6 +130,64 @@ abstract class BaseTblist extends Tblist {
                 </li>
             </ul>
         </div>
-    <?php
+        <?php
+    }
+
+    /**
+     * generate a per page select block
+     *
+     * @return string
+     */
+    public function getPerPageLimit()
+    {
+        ob_start();
+        $selection = explode(',',$this->perPageSelection);
+
+        ?>
+        <div class="field filter-option-lg form-group">
+            <label class="field-label" for="#attention-of-search">Per page</label>
+            <select name="per_page" class="per-page form-control" data-width="80px" >
+                <?php foreach($selection as $val):
+                    $selected_attr = ($val == $this->perPage) ? "selected=\"selected\"" : null; ?>
+                    <option <?php echo $selected_attr; ?> class="<?php echo $val; ?>"><?php echo $val; ?></option>
+                <?php endforeach; ?>
+            </select>
+        </div>
+        <?php
+        return ob_get_clean();
+    }
+
+    /**
+     * Get pagination info
+     *
+     * @return string
+     */
+    public function getPaginationInfo()
+    {
+        $markup  = "<div class=\"pagination-info\">";
+        $markup .= "Showing {$this->page} to {$this->lastPage} of {$this->totalCount} entries";
+        $markup .= "</div>";
+
+        return $markup;
+    }
+
+    /**
+     * Get Table Content
+     *
+     * @return string
+     */
+    public function getTableData()
+    {
+        ob_start();
+
+        ?>
+        <table class="table table-bordered table-list" border="0" cellspacing="0" cellpadding="0" >
+            <?php echo $this->getTableHeader(); ?>
+            <?php echo $this->getTableFooter(); ?>
+            <?php echo $this->getTableBody(); ?>
+        </table>
+        <?php
+
+        return ob_get_clean();
     }
 }
