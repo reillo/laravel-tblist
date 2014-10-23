@@ -12,6 +12,12 @@ use \Illuminate\Support\Str;
  */
 abstract class Tblist {
 
+    const COLUMN_OPTION_LABEL         = 'label';
+    const COLUMN_OPTION_SORTABLE      = 'sortable';
+    const COLUMN_OPTION_TABLE_COLUMN  = 'table_column';
+    const COLUMN_OPTION_CLASSES       = 'classes';
+    const COLUMN_OPTION_THEAD_ATTR    = 'thead_attr';
+
     /**
      * The table name
      *
@@ -25,17 +31,6 @@ abstract class Tblist {
      * @var string $tableId (required)
      */
     public $tableId = "id";
-
-    /**
-     * The default supported options.
-     *
-     * @var array $support
-     */
-    public $support = array(
-        'column_checkable' => false,
-        'action' => false,
-        'advance_shortcut' => false,
-    );
 
     /**
      * Query instance
@@ -80,20 +75,20 @@ abstract class Tblist {
     public $cbName = "check_item";
 
     /**
-     * If options, advance_shortcut is set to true then
-     * this will be useful, this will identify the range that the pagination
+     * If greater than 0 then add an advance shortcut to pagination
+     * this will identify the range that the pagination
      * will jump into.
      *
      * @var int $goto_shortcut_page
      */
-    public $pageJump = 10;
+    public $pageJump = 0;
 
     /**
      * Per page selection
      *
      * @var string $perPageSelection
      */
-    public $perPageSelection = '1,5,10,25,50,100,250';
+    public $perPageSelection = 'all,1,5,10,25,50,100,250';
 
     /**
      * Default per page
@@ -169,16 +164,6 @@ abstract class Tblist {
      * @var bool hf = head and footer content
      */
     private $HFContent = false;
-
-    /**
-     * Create accessor instance
-     *
-     * @param array $options
-     */
-    public function __construct($options = array())
-    {
-        $this->support = array_merge($this->support, $options);
-    }
 
     /**
      * This will call all the method by sequence depends on the requirements
@@ -289,7 +274,6 @@ abstract class Tblist {
         // Next Page And Previous Page
         $this->nextPage = min($this->page + 1, $this->lastPage);
         $this->prevPage = max($this->page - 1, $this->firstPage);
-
     }
 
     /**
@@ -352,11 +336,12 @@ abstract class Tblist {
         // no need to perform validation since
         // tblist assumes that it is a system generated data
         // not user generated data.
-        foreach ($this->columnOrders as $order_by => $order_method)
+        foreach ($this->columnOrders as $column_key => $order_method)
         {
             // just set the default order query string
             // just like: order by column_name desc
-            $this->query->orderBy($order_by, $order_method);
+            $table_column = $this->getColumnOption($column_key, self::COLUMN_OPTION_TABLE_COLUMN, $column_key);
+            $this->query->orderBy($table_column, $order_method);
         }
     }
 
@@ -371,7 +356,6 @@ abstract class Tblist {
 
         $this->query->skip($this->offset)->take($this->perPage);
     }
-
 
     /**
      * This will get the data rows from the database
@@ -464,44 +448,18 @@ abstract class Tblist {
         ob_start();
         ?>
         <tr>
-            <?php if ($this->support['column_checkable']) : ?>
-                <th class="column-check <?php echo $this->getColumnClasses("column_checkable"); ?>">
-                    <div>
-                        <?php $this->colSetHeaderCheckable(); ?>
-                    </div>
-                </th>
-            <?php endif; ?>
-
             <?php // Start constructing the table header columns ?>
-            <?php foreach ($this->columns as $column_key => $column_data) : ?>
+            <?php foreach ($this->columns as $column_key => $column_options) : ?>
 
-                <?php $sortable_class = $this->getSortableClass($column_key, $column_data); ?>
+                <?php $sortable_class = $this->getSortableClass($column_key); ?>
 
                 <th data-column-name="<?php echo $column_key; ?>"
-                    class="<?php echo $sortable_class; ?> <?php echo $this->getColumnClasses($column_key); ?>">
-                    <?php $this->getSortableLinkStart($column_key, $column_data); ?>
-                    <?php
-                    // get content or display from the child column
-                    // example: colSetHeaderColumnName
-                    $key_col_method = Str::camel('col_set_header_' . $column_key);
-                    // class if has a child method defined for the column header method
-                    // else display the set label of this column
-                    if (method_exists($this, $key_col_method)) {
-                        $this->{$key_col_method}($column_key, $column_data);
-                    } else {
-                        echo $column_data['label'];
-                    }
-                    ?>
-                    <?php $this->getSortableLinkEnd($column_key, $column_data); ?>
+                    class="<?php echo $sortable_class; ?> <?php echo $this->getColumnOption($column_key, self::COLUMN_OPTION_CLASSES); ?>"
+                    <?php echo $this->getColumnOption($column_key, self::COLUMN_OPTION_THEAD_ATTR) ?>>
+
+                    <?php echo $this->getColumnHeaderStructure($column_key, $column_options); ?>
                 </th>
             <?php endforeach; ?>
-
-            <?php // Add action if the child is set to be having an action column ?>
-            <?php if ($this->support['action']) : ?>
-                <th class="column-action <?php echo $this->getColumnClasses("action"); ?>">
-                    <?php $this->colSetHeaderAction(); ?>
-                </th>
-            <?php endif; ?>
         </tr>
 
         <?php
@@ -512,15 +470,41 @@ abstract class Tblist {
     }
 
     /**
+     * Create the column data structure
+     *
+     * @param string    $column_key - the column name
+     * @return string
+     */
+    protected function getColumnHeaderStructure($column_key)
+    {
+        $this->getSortableLinkStart($column_key);
+
+        // Column header content
+        $key_col_method = Str::camel('col_set_header_' . $column_key);
+        if (method_exists($this, $key_col_method))
+        {
+            ob_start();
+            $this->{$key_col_method}($column_key);
+            echo ob_get_clean();
+        }
+        else
+        {
+            echo $this->getColumnOption($column_key, self::COLUMN_OPTION_LABEL, NULL);
+        }
+
+        $this->getSortableLinkEnd($column_key);
+    }
+
+
+    /**
      * Get sortable element link start
      *
      * @param string    $column_key
-     * @param array     $column_data
      * @return void
      */
-    protected function getSortableLinkStart($column_key, $column_data)
+    protected function getSortableLinkStart($column_key)
     {
-        if ($column_data['sortable'])
+        if ($this->getColumnOption($column_key, self::COLUMN_OPTION_SORTABLE, false))
         {
             $sortable_url = $this->createUrl(array(
                 "column_orders[{$column_key}]" => (isset($this->columnOrders[$column_key]) && $this->columnOrders[$column_key] == 'asc') ? 'desc' : 'asc',
@@ -535,14 +519,13 @@ abstract class Tblist {
      * Get sortable element link end
      *
      * @param string    $column_key
-     * @param array     $column_data
      * @return void
      */
-    protected function getSortableLinkEnd($column_key, array $column_data)
+    protected function getSortableLinkEnd($column_key)
     {
-        if ($column_data['sortable'])
+        if ($this->getColumnOption($column_key, self::COLUMN_OPTION_SORTABLE, false))
         {
-            // Identify caret
+            // Identify Caret
             echo '<i class="fa fa-caret-down"></i>';
             echo '<i class="fa fa-caret-up"></i>';
 
@@ -550,19 +533,17 @@ abstract class Tblist {
         }
     }
 
-
     /**
      * Get column sortable class
      *
      * @param   string  $column_key
-     * @param   array   $column_data
      * @return null|string
      */
-    protected function getSortableClass($column_key, array $column_data)
+    protected function getSortableClass($column_key)
     {
         $classes = NULL;
 
-        if ($column_data['sortable'])
+        if ($this->getColumnOption($column_key, self::COLUMN_OPTION_SORTABLE))
         {
             $classes .= 'sorting ';
             if (array_key_exists($column_key, $this->columnOrders))
@@ -582,25 +563,14 @@ abstract class Tblist {
         return $classes;
     }
 
-    protected function colSetHeaderCheckable()
-    {
-        ?>
-        <label>
-            <input type="checkbox" id="<?php echo $this->table; ?>-check-all" class="cb-select-all" name="check"
-                   value="" autocomplete="off">
-            <span class="lbl"></span>
-        </label>
-    <?php
-    }
-
-    protected function colSetHeaderAction()
-    {
-        echo "Actions";
-    }
-
 
     // TABLE BODY STRUCTURE
 
+    /**
+     * Create the table body
+     *
+     * @return string
+     */
     function getTableBody()
     {
         ob_start();
@@ -610,28 +580,15 @@ abstract class Tblist {
         <?php if ($this->totalCount >= 1) : ?>
 
             <?php foreach ($this->resultRows as $row) : ?>
-                <tr class="" data-id="<?php echo $row->{$this->tableId}; ?>">
-
-                    <?php if ($this->support['column_checkable']) : ?>
-                        <td class="column-check <?php echo $this->getColumnClasses("column_checkable"); ?>">
-                            <?php $this->colSetCheckable($row); ?>
-                        </td>
-                    <?php endif; ?>
-
-                    <?php foreach ($this->columns as $column_key => $column_data) : ?>
-                        <td class="<?php echo $this->getColumnClasses($column_key) ?>">
-                            <?php echo $this->getColumnStructure($row, $column_key, $column_data); ?>
+                <tr data-id="<?php echo $row->{$this->tableId} ?>">
+                    <?php foreach ($this->columns as $column_key => $column_options) : ?>
+                        <td class="<?php echo $this->getColumnOption($column_key, self::COLUMN_OPTION_CLASSES) ?>">
+                            <?php echo $this->getColumnStructure($row, $column_key); ?>
                         </td>
                     <?php endforeach; ?>
-
-                    <?php if ($this->support['action']) : ?>
-                        <td class="column-action <?php echo $this->getColumnClasses("action"); ?>">
-                            <?php $this->colSetAction($row); ?>
-                        </td>
-                    <?php endif; ?>
                 </tr>
-
             <?php endforeach; ?>
+
         <?php else : ?>
             <tr class="no-items">
                 <td colspan="<?php echo $this->getTotalColumns(); ?>"><?php echo $this->noResults; ?></td>
@@ -643,12 +600,17 @@ abstract class Tblist {
         return ob_get_clean();
     }
 
-    protected function getColumnStructure($row,$column_key,$column_data)
+    /**
+     * Create the column data structure
+     *
+     * @param object    $row - data row
+     * @param string    $column_key - the column name
+     * @return string
+     */
+    protected function getColumnStructure($row, $column_key)
     {
-        list($table_name,$real_column_key) = $this->extractAliases($column_key);
-
         // Check if method exists i.e colSetID
-        $key_col_method = Str::camel('col_set_' . $real_column_key);
+        $key_col_method = Str::camel('col_set_' . $column_key);
 
         if (method_exists($this, $key_col_method))
         {
@@ -657,35 +619,52 @@ abstract class Tblist {
             return ob_get_clean();
         }
 
-        return e($row->{$real_column_key});
+        return e($row->{$column_key});
     }
 
+    /**
+     * Get total columns of the table
+     *
+     * @return int
+     */
     private function getTotalColumns()
     {
-        $column_count = count($this->columns);
-        if ($this->support['action']) $column_count++;
-        if ($this->support['column_checkable']) $column_count++;
-
-        return $column_count;
+        return count($this->columns);
     }
 
-    protected function colSetCheckable($db_row)
+    /**
+     * Create body row for checkable column
+     *
+     * @param object $row - db row
+     */
+    protected function colSetCheckable($row)
     {
-        $row_id = $db_row->{$this->tableId};
+        $row_id = $row->{$this->tableId};
         ?>
         <label>
             <input class="cb-select" type="checkbox" name="<?php echo $this->cbName ?>"
                    id="checkbox-<?php echo $row_id; ?>" value="<?php echo $row_id; ?>" autocomplete="off">
             <span class="lbl"></span>
         </label>
-    <?php
+        <?php
     }
 
+    /**
+     * Create body row for action column
+     *
+     * @param $row
+     * @return null
+     */
     protected function colSetAction($row) { return NULL; }
 
 
     // GET PAGINATION STRUCTURE
 
+    /**
+     * Create the pagination list
+     *
+     * @return string
+     */
     public function getPagination()
     {
         if ($this->perPage == 'all' || ! $this->totalCount)
@@ -696,7 +675,7 @@ abstract class Tblist {
         ob_start();
         // calculate advance shortcut
         // Advance shortcut
-        if ($this->support['advance_shortcut'])
+        if ($this->pageJump)
         {
             $this->jumpNext = min($this->page  + $this->pageJump, $this->lastPage);
             $this->jumpPrev = max($this->page  - $this->pageJump, $this->firstPage);
@@ -710,7 +689,7 @@ abstract class Tblist {
             <?php
             $this->createPagiList(1, '<i class="icon-double-angle-left"></i> first', $this->page == $this->firstPage);
 
-            if ($this->support['advance_shortcut'])
+            if ($this->pageJump)
             {
                 $this->createPagiList($this->jumpPrev, "<i class=\"icon-angle-left\"></i> - {$this->pageJump}", $this->jumpPrev == $this->firstPage);
             }
@@ -724,7 +703,7 @@ abstract class Tblist {
 
             $this->createPagiList($this->nextPage, 'next <i class="icon-angle-right"></i>', $this->page == $this->lastPage);
 
-            if ($this->support['advance_shortcut'])
+            if ($this->pageJump)
             {
                 $this->createPagiList($this->jumpNext, "{$this->pageJump} + <i class=\"icon-angle-right\"></i>", $this->jumpNext == $this->lastPage);
             }
@@ -751,6 +730,14 @@ abstract class Tblist {
         return $markup;
     }
 
+    /**
+     * Create the pagination ul list
+     *
+     * @param int   $page
+     * @param int   $anchor_content
+     * @param bool  $disabled
+     * @param bool  $active
+     */
     protected function createPagiList($page = 1, $anchor_content = 1, $disabled = false, $active =  false)
     {
         // generate classes
@@ -890,31 +877,16 @@ abstract class Tblist {
     }
 
     /**
-     * Accepts string of concatenated table aliases and its
-     * column separated with dot.
+     * Return column option value
      *
-     * @param string $string
-     * @return array
+     * @param $column_key           - the column key in columns property
+     * @param string $option_name   - the column option key in columns options
+     * @param mixed $default
+     * @return null
      */
-    protected function extractAliases($string)
+    protected function getColumnOption($column_key, $option_name, $default = NULL)
     {
-        if (strpos($string,'.') === false) return array('', $string);
-
-        $exploded_key = explode('.',$string);
-        // [0] = table alias
-        // [1] = column name
-        return array($exploded_key[0], $exploded_key[1]);
-    }
-
-    /**
-     * Get column classes
-     *
-     * @param string $column_key - the column key in columns properties
-     * @return null|string
-     */
-    protected function getColumnClasses($column_key)
-    {
-        return isset($this->columns[$column_key]['classes']) ? $this->columns[$column_key]['classes'] : NULL;
+        return isset($this->columns[$column_key][$option_name]) ? $this->columns[$column_key][$option_name] : value($default);
     }
 
     // INPUT/PARAMETERS GETTERS AND SETTERS
