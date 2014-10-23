@@ -121,12 +121,10 @@ Note! if `column key` doesn't exists in the result row, you should create a prot
 |`thead_attr`   | `optional` | `string` |Table header attribute.
 
 
-Custom Column Display
-=====================
+### Custom Column Display
 Add protected method `colSetColumnNameToCamel` (i.e `colSetUsername`, `colSetCreatedAt`) that only accepts 1 parameter an object of result row. Then echo or display the string. 
 
-Example
--------
+#### Example
 
 in your class, `UserTblist` for this example. Add this next to `setColumns` method
 
@@ -138,8 +136,7 @@ protected function colSetUsername($row)
 }
 ```
 
-Custom Column
-=============
+### Custom Column
 Sometimes we want to show column that is not in the result object row.
 
 To do this, add a `column key` to `columns` property and make sure that the `sortable` options is set to `false`.
@@ -149,8 +146,7 @@ and
 create a method called `colSetYourColumnName($row)` that accepts result row.
 
 
-Multiple Tblist
-===============
+### Multiple Tblist
 
 Sometimes we want to display multiple table listing on the same page.
 
@@ -160,7 +156,8 @@ To do this,
  - set the tblist form action with `$list->getBaseURL()`.
  - create the route with controller and return the json data of the tblist.
 
-
+## Demo
+see simple demo [here](http://tblist.nerweb.com/)
 ## License
 This project is open-sourced software licensed under the [MIT license][mit-url].
 
