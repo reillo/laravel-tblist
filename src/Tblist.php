@@ -68,13 +68,6 @@ abstract class Tblist {
     public $columnOrders = array();
 
     /**
-     * The checkbox or row selection checkbox name
-     *
-     * @var string $cbName
-     */
-    public $cbName = "check_item";
-
-    /**
      * If greater than 0 then add an advance shortcut to pagination
      * this will identify the range that the pagination
      * will jump into.
@@ -82,13 +75,6 @@ abstract class Tblist {
      * @var int $goto_shortcut_page
      */
     public $pageJump = 0;
-
-    /**
-     * Per page selection
-     *
-     * @var string $perPageSelection
-     */
-    public $perPageSelection = 'all,1,5,10,25,50,100,250';
 
     /**
      * Default per page
@@ -166,6 +152,21 @@ abstract class Tblist {
     private $HFContent = false;
 
     /**
+     * The application instance being facaded.
+     *
+     * @var \Illuminate\Foundation\Application
+     */
+    protected $app;
+
+    /**
+     * New Instance
+     */
+    public function __construct()
+    {
+        $this->app = app();
+    }
+
+    /**
      * This will call all the method by sequence depends on the requirements
      * of each other
      *
@@ -194,7 +195,7 @@ abstract class Tblist {
 
     private function setRequestParameters()
     {
-        $this->requestParameters = $_REQUEST;
+        $this->requestParameters = $this->app['request']->all();
     }
 
     /**
@@ -411,7 +412,7 @@ abstract class Tblist {
     {
         ob_start();
         ?>
-        <thead class="table-pretty-head">
+        <thead>
         <?php echo $this->getTableHf(); ?>
         </thead>
         <?php
@@ -632,32 +633,6 @@ abstract class Tblist {
         return count($this->columns);
     }
 
-    /**
-     * Create body row for checkable column
-     *
-     * @param object $row - db row
-     */
-    protected function colSetCheckable($row)
-    {
-        $row_id = $row->{$this->tableId};
-        ?>
-        <label>
-            <input class="cb-select" type="checkbox" name="<?php echo $this->cbName ?>"
-                   id="checkbox-<?php echo $row_id; ?>" value="<?php echo $row_id; ?>" autocomplete="off">
-            <span class="lbl"></span>
-        </label>
-        <?php
-    }
-
-    /**
-     * Create body row for action column
-     *
-     * @param $row
-     * @return null
-     */
-    protected function colSetAction($row) { return NULL; }
-
-
     // GET PAGINATION STRUCTURE
 
     /**
@@ -836,33 +811,6 @@ abstract class Tblist {
     }
 
 
-    // Start Other Helper
-
-    /**
-     * generate a per page select block
-     *
-     * @return string
-     */
-    public function getPerPageLimit()
-    {
-        ob_start();
-        $selection = explode(',',$this->perPageSelection);
-
-        ?>
-        <div class="field filter-option-lg form-group">
-            <label class="field-label" for="#attention-of-search">Per page</label>
-            <select name="per_page" class="per-page form-control" data-width="80px" >
-                <?php foreach($selection as $val):
-                    $selected_attr = ($val == $this->perPage) ? "selected=\"selected\"" : null; ?>
-                    <option <?php echo $selected_attr; ?> class="<?php echo $val; ?>"><?php echo $val; ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
-        <?php
-        return ob_get_clean();
-    }
-
-
     // QUERY RETRIEVAL HELPER
 
     /**
@@ -927,7 +875,7 @@ abstract class Tblist {
         ob_start();
 
         ?>
-        <table class="table-list table table-bordered table-hover table-default" border="0" cellspacing="0" cellpadding="0" >
+        <table class="table-list" border="0" cellspacing="0" cellpadding="0" >
             <?php echo $this->getTableHeader(); ?>
             <?php echo $this->getTableFooter(); ?>
             <?php echo $this->getTableBody(); ?>
