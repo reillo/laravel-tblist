@@ -1,6 +1,6 @@
 <?php
 
-class UserTblist extends BaseTblist {
+class UserTblist extends Nerweb\Tblist\BaseTblist {
 
     // set no result message
     public $noResults = "No User found.";
@@ -36,20 +36,6 @@ class UserTblist extends BaseTblist {
         // set the database main table id (i.e post_id, default is id).
         // will be use to set the checkbox in each result rows.
         // $this->tableId = 'user_id';
-
-        // override default support
-        // read more about support here.
-        parent::__construct(array(
-
-            // will append a checkable column for each row.
-            'column_checkable'  => true,
-
-            // will prepend a action column for each row.
-            'action'            => false,
-
-            // use quick jump to pagination page
-            'advance_shortcut'  => false,
-        ));
 
         // Build query
         $this->setQuery();
@@ -89,8 +75,8 @@ class UserTblist extends BaseTblist {
         // it to the header that is ordered by specific column
         // then we need to assign an array to columnOrders
         $this->columnOrders = array(
-            // ([table_without_prefix.])column_name => 'asc|desc'
-            'users.username' => 'asc'
+            // column_name => 'asc|desc'
+            'username' => 'asc'
         );
 
         // Sometimes we need to specifically select a column. this is
@@ -110,34 +96,37 @@ class UserTblist extends BaseTblist {
     {
         // choose what columns should be displayed in the table.
         // For table display, we need to specify the column name for the result query.
-        $this->columns = array(
-            // '([table_without_prefix.])column_name' => array(
-            //      'label' => 'Column Label Here', (string)
-            //      'sortable' => 'Does this column sortable? true or false', (bool),
-            //      'classes' => 'someclass someclass2' (string|optional)
-            // ),
-            'users.id'   => array(
-                'label'     => 'ID',
-                'sortable'  => true
-            ),
-            'users.username'   => array(
-                'label'     => 'Username',
-                'sortable'  => true
-            ),
-            'users.email'   => array(
-                'label'     => 'Email',
-                'sortable'  => true
-            ),
-            'users.created_at'   => array(
-                'label'     => 'Created At',
-                'sortable'  => true
-            ),
-        );
-    }
 
-    protected function colSetId($row)
-    {
-        echo HTML::link(URL::to("/users/$row->id/view"), $row->id);
+        $this->addCheckableColumn();
+
+        $this->columns['id'] = array(
+            'label'         => 'ID',
+            'sortable'      => true,
+            'table_column'  => 'users.id',
+        );
+
+        $this->columns['username'] = array(
+            'label'     => 'Username',
+            'sortable'  => true,
+            'table_column'  => 'users.username',
+        );
+
+        $this->columns['email'] = array(
+            'label'         => 'Email',
+            'sortable'      => true,
+            'classes'       => 'some_class some_class2',
+            'table_column'  => 'users.email',
+            'thead_attr'    => 'style="width:200px" data-some-attr="example"',
+        );
+
+        $this->columns['created_at'] = array(
+            'label'         => 'Created At',
+            'sortable'      => true,
+            'table_column'  => 'users.created_at',
+        );
+
+        $this->addActionColumn();
+
     }
 
     protected function colSetCreatedAt($row)
