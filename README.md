@@ -17,8 +17,6 @@ Add the following to your `composer.json` file:
 Then, run `composer update nerweb/laravel-tblist` or `composer install` if you have not already installed packages.
 
 
-For complete example, see `src/example` folder.
-
 Simple Example
 ====
 
@@ -90,6 +88,8 @@ Create the blade `user/index.blade.php` and insert below.
 {{ $list->getPaginationInfo() }}
 {{ Form::close() }}
 ```
+
+For complete example, see `src/example` folder.
 
 -------------
 
