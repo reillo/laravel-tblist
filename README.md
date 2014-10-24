@@ -36,12 +36,6 @@ class UserTblist extends BaseTblist {
     function __construct()
     {
         $this->table = 'users';
-        
-        // Supported options
-        parent::__construct(array(
-            'column_checkable'  => true,
-            'advance_shortcut'  => true,
-        ));
 
         $this->setQuery();
         $this->setColumns();
@@ -56,6 +50,7 @@ class UserTblist extends BaseTblist {
 
     protected function setColumns()
     {
+
         $this->columns['username'] = array(
             'label'     => 'Username',
             'sortable'  => true,
@@ -69,6 +64,7 @@ class UserTblist extends BaseTblist {
             'table_column'  => 'users.email',
             'thead_attr'    => 'style="width:200px" data-someattr="example"',
         );
+
     }
 }
 ```
