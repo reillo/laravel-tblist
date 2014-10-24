@@ -108,13 +108,13 @@ Note! if `column key` doesn't exists in the result row, you should create a prot
 
 #### Column options
 
-|Options | Required | type     |Description
-|:------|:----------:|:------------:|:-------
-|`label`        | `required` | `string` |Column header label.
-|`sortable`     | `required` | `bool`   |Whether sortable or not.
-|`table_column` | `optional` | `string` |if set, then use its value instead of the `column key` as the column name to sort (i.e `roles.admin`, `users.admin`).
-|`classes`      | `optional` | `string` |table column classes. Note! Both applied to header, footer and body column.
-|`thead_attr`   | `optional` | `string` |Table header attribute.
+|Options | Required | type     |Default |Description
+|:------|:----------:|:------------:|:-------:|:-------
+|`label`        | `optional` | `string` | `null` |Column header label.
+|`sortable`     | `optional` | `bool`   | `false` |Whether sortable or not.
+|`table_column` | `optional` | `string` | `false` |if set, then use its value instead of the `column key` as the column name to sort (i.e `roles.admin`, `users.admin`).
+|`classes`      | `optional` | `string` | `null` |table column classes. Note! Both applied to header, footer and body column.
+|`thead_attr`   | `optional` | `string` | `null` |Table header attribute.
 
 
 ### Custom Column Display
