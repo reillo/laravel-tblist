@@ -9,7 +9,7 @@ class UserTblist extends Nerweb\Tblist\BaseTblist {
     // public $page = 1;
 
     // set per page, the number of item we need to show in each page (default 25)
-    public $perPage = 15;
+    // public $perPage = 15;
 
     // set per page drop down selection (default '1,5,10,25,50,100,250')
     // accepts string separated by comma or an array of item
