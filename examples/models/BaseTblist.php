@@ -1,4 +1,4 @@
-<?php namespace Nerweb\Tblist;
+<?php
 
 use URL;
 
@@ -9,109 +9,42 @@ use URL;
  * Class BaseTblist
  * @package Tblist
  */
-abstract class BaseTblist extends Tblist {
+abstract class BaseTblist extends Nerweb\Tblist\BaseTblist {
 
-    public $perPageSelection    = 'all,1,5,10,25,50,100,250';
-    public $perPage             = 25;
-    public $pageJump            = 10;
+    // sometimes we want to start at page 2 (default page 1, of course)
+    // public $page = 1;
 
     // Set Columns for sortable and action
 
-    /**
-     * Add sortable to column
-     *
-     * @return void
-     */
-    protected function addCheckableColumn()
+    function __construct()
     {
-        $this->columns['checkable'] = array(
-            'thead_attr'    => 'style="width:40px"',
-        );
+        parent::__construct();
+
+        // Conficguration
+
+        // set per page drop down selection (default '1,5,10,25,50,100,250')
+        // accepts string separated by comma of item
+        // you can insert 'all' string without quotes to select all item.
+        $this->perPageSelection    = 'all,1,5,10,25,30,50,100,200';
+
+        // set per page, the number of item we need to show in each page (default 25)
+        $this->perPage             = '25';
+
+        // pagination will jump into from current page.
+        $this->pageJump            = '6';
     }
 
     /**
-     * Add action to column
+     * Get pagination info
      *
-     * @return void
+     * @return string
      */
-    protected function addActionColumn()
+    public function getPaginationInfo()
     {
-        $this->columns['action'] = array(
-            'thead_attr'    => 'style="width:100px"',
-        );
-    }
+        $markup  = "<div class=\"pagination-info\">";
+        $markup .= "Showing {$this->page} to {$this->lastPage} of {$this->totalCount} entries";
+        $markup .= "</div>";
 
-    // Header
-
-    /**
-     * Create header column for checkable column
-     *
-     * @param $column_key
-     */
-    protected function colSetHeaderCheckable($column_key)
-    {
-        ?>
-        <label>
-            <input autocomplete="off" type="checkbox" id="<?php echo $this->table; ?>-check-all" class="cb-select-all input-beauty" name="check" value="">
-            <span class="lbl"></span>
-        </label>
-    <?php
-    }
-
-    /**
-     * Create header column for action column
-     *
-     * @param $column_key
-     */
-    protected function colSetHeaderAction($column_key)
-    {
-        echo "Actions";
-    }
-
-
-    // Body Content
-
-    protected function colSetCheckable($row) {
-        ?>
-        <label>
-            <input  autocomplete="off"
-                    class="cb-select input-beauty cb-select-id-<?php echo $row->{$this->tableId}; ?>"
-                    type="checkbox"
-                    name="<?php echo $this->cbName ?>"
-                    value="<?php echo $row->{$this->tableId}; ?>">
-
-            <span class="lbl"></span>
-        </label>
-    <?php
-    }
-
-    protected function colSetAction($row)
-    {
-        ?>
-        <div class="btn-group" id="">
-            <a href="<?php echo URL::to("/users/{$row->id}/view") ?>" class="btn btn-primary">View</a>
-            <button data-toggle="dropdown" type="button" class="btn btn-info dropdown-toggle">
-                <span class="caret"></span>
-            </button>
-
-            <ul class="dropdown-menu pull-right text-left">
-                <li>
-                    <a href="<?php echo URL::to("/users/export/?users_id[]={$row->{$this->tableId}}") ?>">
-                        Export
-                    </a>
-                </li>
-                <li>
-                    <a href="<?php echo URL::to("/users/{$row->{$this->tableId}}/edit") ?>">
-                        Edit
-                    </a>
-                </li>
-                <li>
-                    <a href="<?php echo URL::to("/users/delete/?users_id[]={$row->{$this->tableId}}") ?>"  class="confirm-delete">
-                        Delete
-                    </a>
-                </li>
-            </ul>
-        </div>
-    <?php
+        return $markup;
     }
 }

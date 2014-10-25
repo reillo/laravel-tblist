@@ -1,31 +1,13 @@
 <?php
 
-class UserTblist extends Nerweb\Tblist\BaseTblist {
+class UserTblist extends BaseTblist {
 
     // set no result message
     public $noResults = "No User found.";
 
-    // sometimes we want to start at page 2 (default page 1, of course)
-    // public $page = 1;
-
-    // set per page, the number of item we need to show in each page (default 25)
-    // public $perPage = 15;
-
-    // set per page drop down selection (default '1,5,10,25,50,100,250')
-    // accepts string separated by comma or an array of item
-    // you can insert 'all' string without quotes to select all item.
-    // public $perPageSelection = 'all,1,5,10,25,50,100,250';
-
-    // if option column_checkable is set to true, then this will be
-    // use as the name of the checkbox input
-    // Note! it will automatically be suffixed with open and close bracket
-    //       as multiple checkbox selection
-    // (default check_item)
-    // public $cbName = "check_item";
-
-    // if option advance_shortcut is set to true, then this property will
-    // be used. The pagination will jump into from current page.
-    // public $pageJump = 10;
+    // 'checkbox' column chebkox name.
+    // automatically being suffixed with []
+    public $cbName = "users_id";
 
     function __construct()
     {
