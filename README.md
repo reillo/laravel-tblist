@@ -1,4 +1,4 @@
-laravel-tblist v1.1.0
+laravel-tblist v1.2.0
 ==============
 
 Simple admin table listing for bootstrap 3.\* and laravel 4.\*|5.*
@@ -16,6 +16,13 @@ Add the following to your `composer.json` file:
 
 Then, run `composer update nerweb/laravel-tblist` or `composer install` if you have not already installed packages.
 
+and
+
+Publish assets:
+
+```
+php artisan asset:publish nerweb/laravel-tblist
+```
 
 Simple Example
 ====
@@ -48,6 +55,7 @@ class UserTblist extends BaseTblist {
 
     protected function setColumns()
     {
+        $this->addCheckableColumn();
 
         $this->columns['username'] = array(
             'label'     => 'Username',
@@ -63,6 +71,8 @@ class UserTblist extends BaseTblist {
             'thead_attr'    => 'style="width:200px" data-someattr="example"',
         );
 
+
+        $this->addCheckableColumn();
     }
 }
 ```
@@ -96,6 +106,8 @@ For complete example, see `src/example` folder.
 
 ## API Reference
 
+Note! Child class should always extend `Nerweb\Tblist\BaseTblist`.
+
 ### Column
 The `column` property accepts a data for column name as a key and column options as a value.
 
@@ -108,14 +120,15 @@ Note! if `column key` doesn't exists in the result row, you should create a prot
 
 #### Column options
 
-|Options | Required | type     |Default |Description
-|:------|:----------:|:------------:|:-------:|:-------
-|`label`        | `optional` | `string` | `null` |Column header label.
-|`sortable`     | `optional` | `bool`   | `false` |Whether sortable or not.
-|`table_column` | `optional` | `string` | `false` |if set, then use its value instead of the `column key` as the column name to sort (i.e `roles.admin`, `users.admin`).
-|`classes`      | `optional` | `string` | `null` |table column classes. Note! Both applied to header, footer and body column.
-|`thead_attr`   | `optional` | `string` | `null` |Table header attribute.
+|Options | type     |Description
+|:------|:------------:|:-------
+|`label`        |  `string` |Column header label.
+|`sortable`     |  `bool`   |Whether sortable or not.
+|`table_column` |  `string` |if set, then use its value instead of the `column key` as the column name to sort (i.e `roles.admin`, `users.admin`).
+|`classes`      |  `string` |table column classes. Note! Both applied to header, footer and body column.
+|`thead_attr`   |  `string` |Table header attribute.
 
+Note! All `column option` is default to `null`.
 
 ### Custom Column Display
 Add protected method `colSetColumnNameToCamel` (i.e `colSetUsername`, `colSetCreatedAt`) that only accepts 1 parameter an object of result row. Then echo or display the string. 
@@ -125,7 +138,6 @@ Add protected method `colSetColumnNameToCamel` (i.e `colSetUsername`, `colSetCre
 in your class, `UserTblist` for this example. Add this next to `setColumns` method
 
 ```php
-
 protected function colSetUsername($row)
 {
     echo Html::link("/users/{$row->id}/view", $row->username);
@@ -148,7 +160,8 @@ Sometimes we want to display multiple table listing on the same page.
 
 To do this,
 
- - on class initialization, in this case `$list = new UserTblist()`. Override base URL via `$list->setBaseURL($url, $parameters)` method.
+ - on class initialization, in this case `$list = new UserTblist()`. Override base URL
+ via `$list->setBaseURL($url, $parameters)` method.
  - set the tblist form action with `$list->getBaseURL()`.
  - create the route with controller and return the json data of the tblist.
 
