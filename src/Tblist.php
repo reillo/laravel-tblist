@@ -91,15 +91,15 @@ abstract class Tblist {
      */
     public $page = 1;
 
-    private $totalCount;
-    private $nextPage;
-    private $prevPage;
-    private $lastPage;
-    private $firstPage;
-    private $jumpNext;
-    private $jumpPrev;
-    private $offset;
-    private $limit;
+    protected $totalCount;
+    protected $nextPage;
+    protected $prevPage;
+    protected $lastPage;
+    protected $firstPage;
+    protected $jumpNext;
+    protected $jumpPrev;
+    protected $offset;
+    protected $limit;
 
     /**
      * The items of results row
