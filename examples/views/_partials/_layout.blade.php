@@ -12,7 +12,7 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     <!-- Tblist Styles  -->
-    <link rel="stylesheet" href="<?php echo URL::to('/assets/css/tblist-form.css') ?>">
+    <link rel="stylesheet" href="<?php echo URL::to('/packages/nerweb/laravel-tblist/css/tblist-form.css') ?>">
 
     <!-- jQuery 2.0.2 -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
@@ -36,7 +36,7 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <!-- Tblist JS jQuery Plugin  -->
-    <script src="<?php echo URL::to('/assets/js/tblist.jquery.js') ?>"></script>
+    <script src="<?php echo URL::to('/packages/nerweb/laravel-tblist/js/tblist.jquery.js') ?>"></script>
 
     <script>
         // Initialize tblist
