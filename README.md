@@ -11,7 +11,7 @@ Installation
 Add the following to your `composer.json` file:
 
 ```json
-"nerweb/laravel-tblist": "1.1.x"
+"nerweb/laravel-tblist": "1.2.x"
 ```
 
 Then, run `composer update nerweb/laravel-tblist` or `composer install` if you have not already installed packages.
