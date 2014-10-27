@@ -1,7 +1,7 @@
 laravel-tblist v1.2.0
 ==============
 
-Simple admin table listing for bootstrap 3.\* and laravel 4.\*|5.*
+Simple admin table listing for bootstrap 3 and laravel 4|5
 
 ----------
 
