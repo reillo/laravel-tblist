@@ -40,6 +40,9 @@ class UserTblist extends BaseTblist {
 
     function __construct()
     {
+        // Run parent constructor
+        parent::__construct();
+
         $this->table = 'users';
 
         $this->setQuery();

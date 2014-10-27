@@ -11,6 +11,9 @@ class UserTblist extends BaseTblist {
 
     function __construct()
     {
+        // Run parent constructor
+        parent::__construct();
+
         // set the database main table name we want to display without
         // prefix (i.e users, posts)
         $this->table = 'users';
