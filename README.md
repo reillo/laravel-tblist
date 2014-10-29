@@ -40,9 +40,6 @@ class UserTblist extends BaseTblist {
 
     function __construct()
     {
-        // Run parent constructor
-        parent::__construct();
-
         $this->table = 'users';
 
         $this->setQuery();
@@ -74,8 +71,7 @@ class UserTblist extends BaseTblist {
             'thead_attr'    => 'style="width:200px" data-someattr="example"',
         );
 
-
-        $this->addCheckableColumn();
+        $this->addActionColumn();
     }
 }
 ```
