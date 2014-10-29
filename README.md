@@ -1,4 +1,4 @@
-laravel-tblist v1.2.0
+laravel-tblist v1.2.2
 ==============
 
 Simple admin table listing for bootstrap 3 and laravel 4|5
