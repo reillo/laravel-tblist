@@ -98,7 +98,7 @@ Create the blade `user/index.blade.php` and insert below.
 {{ Form::close() }}
 ```
 
-For complete example, see `src/example` folder.
+For complete example, see `example` folder.
 
 -------------
 
