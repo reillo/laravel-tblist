@@ -25,14 +25,6 @@ abstract class BaseTblist extends Tblist {
      */
     public $cbName = "check_item";
 
-    /**
-     * New Instance
-     */
-    function __construct()
-    {
-        parent::__construct();
-    }
-
     // Set Columns for sortable and action
 
     /**
