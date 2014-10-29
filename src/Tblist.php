@@ -152,21 +152,6 @@ abstract class Tblist {
     private $HFContent = false;
 
     /**
-     * The application instance being facaded.
-     *
-     * @var \Illuminate\Foundation\Application
-     */
-    protected $app;
-
-    /**
-     * New Instance
-     */
-    public function __construct()
-    {
-        $this->app = app();
-    }
-
-    /**
      * This will call all the method by sequence depends on the requirements
      * of each other
      *
@@ -195,7 +180,7 @@ abstract class Tblist {
 
     private function setRequestParameters()
     {
-        $this->requestParameters = $this->app['request']->all();
+        $this->requestParameters = Request::all();
     }
 
     /**
