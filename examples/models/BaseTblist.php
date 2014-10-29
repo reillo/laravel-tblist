@@ -18,10 +18,6 @@ abstract class BaseTblist extends Nerweb\Tblist\BaseTblist {
 
     function __construct()
     {
-        parent::__construct();
-
-        // Conficguration
-
         // set per page drop down selection (default '1,5,10,25,50,100,250')
         // accepts string separated by comma of item
         // you can insert 'all' string without quotes to select all item.
