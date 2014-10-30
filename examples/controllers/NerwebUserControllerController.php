@@ -1,6 +1,6 @@
 <?php
 
-class UserController extends BaseController {
+class NerwebUserController extends BaseController {
 
 	/*
 	|--------------------------------------------------------------------------
@@ -17,7 +17,8 @@ class UserController extends BaseController {
 
 	public function getIndex()
 	{
-        $list = new UserTblist();
+        $list = new NerwebUserTblist();
+        $list->prepareList();
 
         if (Request::ajax())
         {

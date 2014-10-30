@@ -9,7 +9,7 @@ use URL;
  * Class BaseTblist
  * @package Tblist
  */
-abstract class BaseTblist extends Nerweb\Tblist\BaseTblist {
+abstract class NerwebBaseTblist extends Nerweb\Tblist\BaseTblist {
 
     // sometimes we want to start at page 2 (default page 1, of course)
     // public $page = 1;

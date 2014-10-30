@@ -1,6 +1,6 @@
 <?php
 
-class UserTblist extends BaseTblist {
+class NerwebUserTblist extends NerwebBaseTblist {
 
     // set no result message
     public $noResults = "No User found.";
@@ -27,9 +27,6 @@ class UserTblist extends BaseTblist {
 
         // set table columns
         $this->setColumns();
-
-        // we need to prepare the tblist to run all necessary actions
-        $this->prepareList();
 
         // Debug All Query
         // dd(DB::getQueryLog());
