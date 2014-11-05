@@ -79,7 +79,7 @@ Create a route and and its controller. insert below inside the controller method
 
 ```php
 $list = new UserTblist();
-$this->prepareList();
+$list->prepareList();
 
 return View::make('users.index', array('list', $list));
 ```
