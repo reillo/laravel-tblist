@@ -1,4 +1,4 @@
-laravel-tblist (abandoned)
+laravel-tblist 
 ==============
 
 Simple admin table listing for bootstrap 3 and laravel 4|5
